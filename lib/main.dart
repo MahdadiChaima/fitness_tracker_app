@@ -12,18 +12,7 @@ void main() async {
     print("hi");
     await FirebaseAuth.instance.createUserWithEmailAndPassword(
        email: "bybkkiy@gmail.com", password: "1234556");
-   await FirebaseFirestore.instance.collection('users').doc("me6kSKZxVpXV7wT0ZvqQ2zFahPf2").set({
-      'DateBirth': Timestamp.fromDate(DateTime(1990, 1, 1)),
-      'Weight': 40,
-      'FullName': "ch i",
-      'GenderMale': false,
-      'Height': 163,
-      'ImproveShape': true,
-      'LeanTone': false,
-      'LoseFat': false,
-      'PhoneNumber': "0348530505",
-      'UploadImage': 'djdufd',
-    });
+  
     print('Successfully registered user!');
   } catch (e) {
     print('Error registering user: $e');
