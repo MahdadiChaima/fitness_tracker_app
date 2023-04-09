@@ -1,7 +1,7 @@
 import 'package:fitness_tracker/view/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../widgets/CustomButton.dart';
+import '../widgets/custom_button.dart';
 class StartedScreen extends StatelessWidget {
   const StartedScreen({Key? key}) : super(key: key);
   @override

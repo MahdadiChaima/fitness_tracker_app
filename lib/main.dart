@@ -1,3 +1,4 @@
+import 'package:fitness_tracker/view/screens/register_screen.dart';
 import 'package:fitness_tracker/view/screens/started_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,7 +19,7 @@ void main() async {
           ),
         primarySwatch: Colors.deepOrange,
       ),
-      home: const StartedScreen(),
+      home:  RegisterScreen(),
     )
   );
 }

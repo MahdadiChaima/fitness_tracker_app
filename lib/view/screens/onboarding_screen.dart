@@ -1,6 +1,6 @@
 import 'package:fitness_tracker/presenter/controller/onboarding_controller.dart';
 import 'package:fitness_tracker/view/screens/started_screen.dart';
-import 'package:fitness_tracker/view/widgets/OnBoardingItemWidget.dart';
+import 'package:fitness_tracker/view/widgets/on_boarding_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/view/widgets/colors.dart';
 import 'package:get/get.dart';
