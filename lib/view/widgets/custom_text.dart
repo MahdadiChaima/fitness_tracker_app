@@ -49,7 +49,7 @@ class CustomTextWidget extends StatelessWidget {
         );
         break;
       case 6:
-        textStyle = TextStyle(
+        textStyle = const TextStyle(
           fontFamily: 'Poppins',
           fontSize: 16,
           fontWeight: FontWeight.w400,

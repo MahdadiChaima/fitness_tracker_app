@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
 import 'presenter/service/cache_helper.dart';
+var amira;
 
 void main() async {
   String? token='';
