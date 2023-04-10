@@ -1,9 +1,11 @@
 import 'package:fitness_tracker/presenter/controller/onboarding_controller.dart';
+import 'package:fitness_tracker/view/screens/register_screen.dart';
 import 'package:fitness_tracker/view/screens/started_screen.dart';
 import 'package:fitness_tracker/view/widgets/on_boarding_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/view/widgets/colors.dart';
 import 'package:get/get.dart';
+
 class OnBoardingScreen extends StatelessWidget {
   final OnBoardingController _controller = Get.put(OnBoardingController());
 
@@ -34,11 +36,11 @@ class OnBoardingScreen extends StatelessWidget {
               left: 0,
               right: 0,
               child: Obx(
-                    () => Row(
+                () => Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                     _controller.onBoardingItems.length,
-                        (index) => AnimatedContainer(
+                    (index) => AnimatedContainer(
                       duration: Duration(milliseconds: 300),
                       height: 10,
                       width: 10,
@@ -54,38 +56,27 @@ class OnBoardingScreen extends StatelessWidget {
                 ),
               ),
             ),
-            if (_controller.currentPage.value == 0) // Show only on the first page
-              Positioned(
-                bottom: 37,
-                right: 20,
-                child: IconButton(
-                  onPressed: () => _controller.pageController.nextPage(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                  ),
-                  icon: Icon(
-                    Icons.navigate_next,
-                    size: 44,
-                    color: primaryColor,
-                  ),
-                ),
-              ),
-          Obx(()=> _controller.isLastPage.isTrue?
-          Positioned(
-            bottom: 37,
-            right: 20,
-            child: IconButton(
-              onPressed: () => Get.to(()=>StartedScreen()), // do something when the button is clicked
-              icon: Icon(
-                Icons.navigate_next,
-                size: 44,
-                color: primaryColor,
-              ),
-            ),
-          ):Container())
 
+            GetBuilder<OnBoardingController>(
+              init: OnBoardingController(),
+              builder: (controller) {
+                return controller.isLastPage.isTrue
+                    ? Positioned(
+                        bottom: 37,
+                        right: 20,
+                        child: IconButton(
+                          onPressed: () => Get.to(()=>RegisterScreen()),
+                          icon: Icon(
+                            Icons.navigate_next,
+                            size: 44,
+                            color: primaryColor,
+                          ),
+                        ),
 
-
+                      )
+                    : Container();
+              },
+            )
           ],
         ),
       ),

@@ -8,8 +8,10 @@ class DefaultTextField extends StatelessWidget {
   final  GestureTapCallback onPressed ;
   final double borderRadius;
   final TextInputType type;
-  Icon? suffixIcon ;
+  IconData? suffix ;
+  Function? suffixFunction;
   bool obscuretext  ;
+  String? textForEmptyUnValid ;
   DefaultTextField({Key? key,
     required this.prefixIcon,
     required this.hintText,
@@ -17,9 +19,10 @@ class DefaultTextField extends StatelessWidget {
     required this.onPressed,
     required this.type,
     this.borderRadius = 14.0,
-    this.suffixIcon,
-    this.obscuretext=false
-
+    this.suffix,
+    this.suffixFunction,
+    this.obscuretext=false,
+    this.textForEmptyUnValid= 'this element is required',
   }) : super(key: key);
 
 
@@ -27,15 +30,26 @@ class DefaultTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: textFieldCBackgroundColor,
-      child:  TextField(
+      child:  TextFormField(
         obscureText: obscuretext,
         keyboardType:type ,
         onTap: onPressed,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return textForEmptyUnValid;
+          }
+          return null;
+        },
         controller: controller,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
+          suffixIcon: IconButton(
+            onPressed: () {
+              suffixFunction!();
+            },
+            icon: Icon(suffix),
+          ),
           hintText: hintText,
         ),
 

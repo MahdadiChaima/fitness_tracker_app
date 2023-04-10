@@ -1,11 +1,13 @@
 import 'package:fitness_tracker/presenter/controller/register_controller.dart';
+import 'package:fitness_tracker/view/screens/login_screen.dart';
 import 'package:fitness_tracker/view/widgets/custom_button.dart';
+import 'package:fitness_tracker/view/widgets/custom_text.dart';
 import 'package:fitness_tracker/view/widgets/custom_text_field.dart';
 import 'package:fitness_tracker/view/widgets/space.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/colors.dart';
-import '../widgets/text_style.dart';
+
 class RegisterScreen extends StatelessWidget {
   final RegisterController registerController = Get.put(RegisterController());
   @override
@@ -20,87 +22,92 @@ class RegisterScreen extends StatelessWidget {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Text(
-                        'Hey there,',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 24,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ), 
-                          const Text(
-                        'Create an account',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ), 
-                          SizedBox(height: 100,),
-                          DefaultTextField(
+                      CustomTextWidget(index: 5, text: 'Hey there,'),
+                      CustomTextWidget(index: 1, text: 'Create an account'),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      DefaultTextField(
                         controller: registerController.nameController,
                         prefixIcon: Icon(Icons.person),
                         hintText: 'Full Name',
                         onPressed: () {},
                         type: TextInputType.text,
                       ),
-                          Space(),
-                          DefaultTextField(
+                      Space(),
+                      DefaultTextField(
                         controller: registerController.phoneController,
                         prefixIcon: Icon(Icons.phone),
                         hintText: 'Phone Number',
                         onPressed: () {},
                         type: TextInputType.phone,
                       ),
-                          Space(),
-                          DefaultTextField(
+                      Space(),
+                      DefaultTextField(
                         controller: registerController.emailController,
                         prefixIcon: Icon(Icons.email),
                         hintText: 'Email',
                         onPressed: () {},
                         type: TextInputType.emailAddress,
                       ),
-                          Space(),
-                          DefaultTextField(controller: registerController.passwordController,
-                            prefixIcon: Icon(Icons.lock), hintText: 'Password',
-                        suffixIcon: Icon(Icons.remove_red_eye_outlined),
-                        onPressed: () {},
-                        type: TextInputType.visiblePassword,
-                        obscuretext: true,
-                      ),
-                          Space(),
-                          Obx(()  {
-                            return Row(
-                              children: [
+                      Space(),
+                          GetBuilder<RegisterController>(init: RegisterController(),
+                            builder: (controller)=>DefaultTextField(
+                              controller: registerController.passwordController,
+                              prefixIcon: Icon(Icons.lock),
+                              hintText: 'Password',
+                              suffix:controller.obscureText.value? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                              suffixFunction: ()=>controller.toggleObscureText(),
+                              textForEmptyUnValid: "Enter you password ",
+                              onPressed: () {},
+                              type: TextInputType.visiblePassword,
+                              obscuretext: controller.obscureText.value,
+                            ),),
+                      Space(),
+                      Obx(() {
+                        return Row(
+                          children: [
                             Checkbox(
-                            value: registerController.isChecked.value,
+                              value: registerController.isChecked.value,
                               onChanged: (value) {
                                 registerController.isChecked.value = value!;
                               },
                             ),
-                                 Flexible(child:
-                                 Text.rich(
-                                   TextSpan(
+                            Flexible(
+                              child: Column(
+                                children: [
+                                  Row(
                                     children: [
-                                      MyText('By continuing you accept our '),
-                                      MyTextLine('Privacy Policy'),
-                                      MyText(' and '),
-                                      MyTextLine('Term of Use'),
+                                      CustomTextWidget(
+                                          text: 'By continuing you accept our ',
+                                          index: 7),
+                                      CustomTextWidget(
+                                          text: 'Privacy Policy', index: 8),
                                     ],
                                   ),
-                                  maxLines: 2,
-                                )
-                                ),
-                              ],
-                            );
-                          }),
-                          Space(),
-                          CustomButton(
+                                  Row(
+                                    children: [
+                                      CustomTextWidget(text: ' and ', index: 7),
+                                      CustomTextWidget(
+                                          text: 'Term of Use', index: 8),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+                      Space(),
+                      CustomButton(
                         text: 'Register',
-                        onPressed: () => registerController.register(),
-                      ),
-                          Space(),
-                          Row(
+                        onPressed: (){
+                          Get.find<RegisterController>().register(
+                          );
+                        } ),
+
+                      Row(
                         children: const <Widget>[
                           Expanded(
                             child: Divider(
@@ -124,32 +131,26 @@ class RegisterScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                          Space(),
-                          GestureDetector(
-                            onTap: (){},
-                            child: Image.asset('assets/images/google.png'),
-                          ),
-                          Space(),
-                          GestureDetector(
-                            onTap: (){},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text('Already have an account?',style:TextStyle(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black,
-                                ),),
-                                Text('Login',style:TextStyle(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.w400,
-                                  color: secondColor,
-                                ),),
-                              ],
-                            ),
-                          )
+                      Space(),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Image.asset('assets/images/google.png'),
+                      ),
+                      Space(),
+                      GestureDetector(
+                        onTap: () =>Get.to(()=>LoginScreen()),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomTextWidget(
+                                text: 'Already have an account ? ', index: 3),
+                            CustomTextWidget(
+                                text: 'Login',
+                                index: 3,
+                                color: primaryTextColor)
+                          ],
+                        ),
+                      )
                     ])))));
   }
 }

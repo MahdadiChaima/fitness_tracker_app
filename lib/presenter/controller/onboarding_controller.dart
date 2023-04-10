@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class OnBoardingController extends GetxController {
   var currentPage = 0.obs;
   var pageController = PageController(initialPage: 0);
-  var isLastPage = false.obs;
+  RxBool isLastPage = false.obs;
   List<OnBoardingItem> onBoardingItems = const [
     OnBoardingItem(
       title: "Track Your Goal",
@@ -26,10 +26,16 @@ class OnBoardingController extends GetxController {
     currentPage.listen((value) {
       if (value == onBoardingItems.length - 1) {
         isLastPage.value = true;
+        print('true');
+        update();
       } else {
         isLastPage.value = false;
+        print('false');
+        update();
       }
+
     });
+update();
   }
 
   @override
@@ -45,5 +51,6 @@ class OnBoardingController extends GetxController {
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOutCirc,
     );
+
   }
 }
