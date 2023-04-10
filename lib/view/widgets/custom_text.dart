@@ -12,7 +12,7 @@ class CustomTextWidget extends StatelessWidget {
       case 1://head
         textStyle =const TextStyle(
           fontFamily: 'Poppins',
-          fontSize: 30,
+          fontSize: 25,
           fontWeight: FontWeight.w700,
           color: titleTextColor
         );
@@ -20,7 +20,7 @@ class CustomTextWidget extends StatelessWidget {
       case 2://Subtitle
         textStyle =const TextStyle(
           fontFamily: 'Poppins',
-          fontSize: 12,
+          fontSize: 15,
           fontWeight: FontWeight.w400,
           color: subTitleTextColor
         );

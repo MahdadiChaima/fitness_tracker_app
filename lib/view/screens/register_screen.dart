@@ -12,8 +12,6 @@ class RegisterScreen extends StatelessWidget {
   final RegisterController registerController = Get.put(RegisterController());
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         body: SingleChildScrollView(
             child: Padding(
@@ -24,7 +22,7 @@ class RegisterScreen extends StatelessWidget {
                         children: [
                       CustomTextWidget(index: 5, text: 'Hey there,'),
                       CustomTextWidget(index: 1, text: 'Create an account'),
-                      SizedBox(
+                      const SizedBox(
                         height: 50,
                       ),
                       DefaultTextField(
@@ -106,7 +104,6 @@ class RegisterScreen extends StatelessWidget {
                           Get.find<RegisterController>().register(
                           );
                         } ),
-
                       Row(
                         children: const <Widget>[
                           Expanded(

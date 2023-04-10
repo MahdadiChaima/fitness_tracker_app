@@ -1,3 +1,4 @@
+import 'package:fitness_tracker/view/screens/register_page_2.dart';
 import 'package:fitness_tracker/view/screens/register_screen.dart';
 import 'package:fitness_tracker/view/screens/started_screen.dart';
 import 'package:fitness_tracker/view/screens/workout_screen.dart';
@@ -6,7 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
 import 'presenter/service/cache_helper.dart';
-var amira;
+
 
 void main() async {
   String? token='';
@@ -24,7 +25,7 @@ void main() async {
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
       ),
-      home: startWidget,
+      home: RegisterPage2(),
     )
   );
 }
