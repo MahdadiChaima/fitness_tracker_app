@@ -1,9 +1,9 @@
-import 'package:fitness_tracker/view/screens/started_screen.dart';
+import 'package:fitness_tracker/view/screens/login_screen.dart';
 import 'package:fitness_tracker/view/screens/workout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import '../../view/widgets/custom_snackbar.dart';
 import '../service/cache_helper.dart';
 
 class LoginController extends GetxController {
@@ -43,9 +43,10 @@ class LoginController extends GetxController {
       errorMessage = null;
       emailController.text = '';
       passwordController.text = '';
-      Get.snackbar('Success', ' Login successful',backgroundColor: Colors.greenAccent,colorText: Colors.white);
-      await LocalStorage.saveLoginKey(userCredential.user!.uid);
+      showSnackbar('Success',' Login successful',isSuccess: true);
 
+      await CacheHelper.saveData(
+          key: 'token', value:userCredential.user!.uid);
       Get.to(()=>const WorkoutScreen());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -56,17 +57,30 @@ class LoginController extends GetxController {
         errorMessage = 'Wrong password provided for that user.';
       } else {
         errorMessage = e.message;
-      } Get.snackbar('Error', errorMessage!,backgroundColor: Colors.redAccent,colorText: Colors.white);
+      }
+      showSnackbar('Error',errorMessage!);
     } catch (e) {
-      Get.snackbar('Error', e.toString(),backgroundColor: Colors.redAccent,colorText: Colors.white);
+      showSnackbar('Error', e.toString());
       errorMessage = e.toString();
     }
     update();
+  }
+  void resetPassword() async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text);
+      showSnackbar('Password Reset Email Sent', 'Check your email for instructions',isSuccess: true);
+
+    } on FirebaseAuthException catch (e) {
+      showSnackbar('Error Sending Password Reset Email', e.toString());
+
+    }
   }
 
   // Logout method
   Future<void> logout() async {
     await _auth.signOut();
+    Get.to(()=>LoginScreen());
+    await CacheHelper.removeData(key: 'token');
   }
 }
 

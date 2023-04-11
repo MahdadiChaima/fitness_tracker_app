@@ -1,14 +1,15 @@
 import 'package:fitness_tracker/presenter/controller/register_controller.dart';
 import 'package:fitness_tracker/view/screens/login_screen.dart';
+import 'package:fitness_tracker/view/screens/register/register_screen_2.dart';
 import 'package:fitness_tracker/view/widgets/custom_button.dart';
 import 'package:fitness_tracker/view/widgets/custom_text.dart';
 import 'package:fitness_tracker/view/widgets/custom_text_field.dart';
 import 'package:fitness_tracker/view/widgets/space.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../widgets/colors.dart';
+import '../../widgets/colors.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen1 extends StatelessWidget {
   final RegisterController registerController = Get.put(RegisterController());
   @override
   Widget build(BuildContext context) {
@@ -103,6 +104,7 @@ class RegisterScreen extends StatelessWidget {
                         onPressed: (){
                           Get.find<RegisterController>().register(
                           );
+
                         } ),
                       Row(
                         children: const <Widget>[

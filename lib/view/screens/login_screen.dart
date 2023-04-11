@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/presenter/controller/register_controller.dart';
-import 'package:fitness_tracker/view/screens/register_screen.dart';
+import 'package:fitness_tracker/view/screens/register/register_screen_1.dart';
 import 'package:fitness_tracker/view/screens/workout_screen.dart';
 import 'package:fitness_tracker/view/widgets/custom_button.dart';
 import 'package:fitness_tracker/view/widgets/custom_text.dart';
@@ -41,6 +41,7 @@ class LoginScreen extends StatelessWidget {
                               onPressed: () {},
                               type: TextInputType.emailAddress,
                             ),
+
                             Space(),
                             GetBuilder<LoginController>(init: LoginController(),
                               builder: (controller)=>DefaultTextField(
@@ -55,6 +56,20 @@ class LoginScreen extends StatelessWidget {
                               type: TextInputType.visiblePassword,
                               obscuretext: controller.obscureText.value,
                             ),),
+                            SizedBox(height: 5,),
+                            Align(alignment: Alignment.topLeft,
+                              child: GetBuilder<LoginController>(
+                                init: LoginController(),
+                                builder:(controller)=> GestureDetector(
+                                  onTap: (){
+                                   controller.resetPassword();
+                                  },
+                                  child: CustomTextWidget(
+                                      text: 'Forget Password ? ',
+                                      index: 7),
+                                ),
+                              ),
+                            ),
                             SizedBox(height: 140,),
 
                             GetBuilder<LoginController>(
@@ -114,7 +129,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                             Space(),
                             GestureDetector(
-                              onTap: () =>Get.to(()=>RegisterScreen()),
+                              onTap: () =>Get.to(()=>RegisterScreen1()),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [

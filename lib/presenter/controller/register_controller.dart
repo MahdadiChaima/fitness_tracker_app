@@ -1,13 +1,21 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fitness_tracker/view/screens/register/register_screen_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import '../../view/widgets/custom_snackbar.dart';
 
 class RegisterController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  RxString userId=''.obs;
   RxBool isChecked = false.obs;
   var obscureText = true.obs;
 
@@ -36,14 +44,59 @@ class RegisterController extends GetxController {
         password: password,
       );
       print(userCredential);
+      userId=userCredential.user!.uid as RxString;
       // Show success message
-      Get.snackbar('Success', 'Registration successful',backgroundColor: Colors.greenAccent,colorText: Colors.white);
-
+      showSnackbar('Success','Registration successful',isSuccess: true);
+      Get.to(()=>RegisterScreen2());
       isLoading.value = false;
     } catch (e) {
-      Get.snackbar('Error', e.toString(),backgroundColor: Colors.redAccent,colorText: Colors.white);
+      showSnackbar( 'Error',e.toString());
       isLoading.value = false;
     }
   }
+
+
+  File? _imageFile;
+  RxString? _imageUrl;
+
+  Future<void> pickImage() async {
+    print('hiiiiiii');
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    print(pickedFile);
+    if (pickedFile != null) {
+      _imageFile = File(pickedFile.path);
+      print("image selected: ${_imageFile?.path}");
+      update();
+    }
+  }
+
+  Future<void> uploadImage() async {
+    print(_imageFile);
+    if (_imageFile == null) return;
+
+    try {
+      // Upload image to Firebase Storage
+      Reference storageReference = FirebaseStorage.instance.ref().child('images/${DateTime.now().toString()}');
+      UploadTask uploadTask = storageReference.putFile(_imageFile!);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      _imageUrl = (await storageReference.getDownloadURL()) as RxString?;
+
+      // Save download URL to Firestore
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      FirebaseFirestore.instance.collection('users').doc(uid).update({'image': _imageUrl});
+    } catch (e) {
+      print(e.toString());
+      // Handle error here
+    }
+
+    update();
+  }
+
+
+
 
 }
