@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fitness_tracker/presenter/service/cache_helper.dart';
 import 'package:fitness_tracker/view/screens/register/register_screen_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+
 
 import '../../view/widgets/custom_snackbar.dart';
 
@@ -77,9 +80,10 @@ class RegisterController extends GetxController {
     }
   }
 
-
   File? _imageFile;
   RxString? _imageUrl;
+
+  File? get image => _imageFile;
 
   Future<void> pickImage() async {
     print('hiiiiiii');
@@ -97,35 +101,36 @@ class RegisterController extends GetxController {
   }
 
   Future<void> uploadImage() async {
-    print(_imageFile);
+
     if (_imageFile == null) return;
 
-    try {
-      // Upload image to Firebase Storage
-      Reference storageReference = FirebaseStorage.instance.ref().child('images/${DateTime.now().toString()}');
-      UploadTask uploadTask = storageReference.putFile(_imageFile!);
+    // Upload image to Firebase Storage
+    final storageRef = FirebaseStorage.instance.ref().child('images/${DateTime.now().toString()}');
+    final uploadTask = storageRef.putFile(_imageFile!);
 
-      // Log upload progress and status
-      uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-        print('Task state: ${snapshot.state}');
-        print('Progress: ${(snapshot.bytesTransferred / snapshot.totalBytes) * 100} %');
-      });
+    // Log upload progress and status
+    uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+      print('Task state: ${snapshot.state}');
+      print('Progress: ${(snapshot.bytesTransferred / snapshot.totalBytes) * 100} %');
+    });
 
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      _imageUrl = (await storageReference.getDownloadURL()) as RxString?;
+    // Wait for the upload to complete
+    uploadTask.whenComplete(() => {print("upload  complete")}).then((value) => print("upload complete"));
 
+    // Check if the object exists at the specified location
+    final metadata = await storageRef.getMetadata();
+    if (metadata != null) {
       // Save download URL to Firestore
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      FirebaseFirestore.instance.collection('users').doc(uid).update({'image': _imageUrl});
-    } catch (e) {
-      CustomSnackbar("error",e.toString());
-      print(e.toString());
-      // Handle error here
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final downloadUrl = await storageRef.getDownloadURL();
+      FirebaseFirestore.instance.collection('users').doc(uid).update({'image': downloadUrl});
+    } else {
+      // Handle error - object does not exist
+      print('Error: object does not exist at location');
     }
 
     update();
   }
-
 
 
 
