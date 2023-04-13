@@ -43,7 +43,7 @@ class LoginController extends GetxController {
       errorMessage = null;
       emailController.text = '';
       passwordController.text = '';
-      showSnackbar('Success',' Login successful',isSuccess: true);
+      CustomSnackbar('Success',' Login successful',isSuccess: true);
 
       await CacheHelper.saveData(
           key: 'token', value:userCredential.user!.uid);
@@ -58,9 +58,9 @@ class LoginController extends GetxController {
       } else {
         errorMessage = e.message;
       }
-      showSnackbar('Error',errorMessage!);
+      CustomSnackbar('Error',errorMessage!);
     } catch (e) {
-      showSnackbar('Error', e.toString());
+      CustomSnackbar('Error', e.toString());
       errorMessage = e.toString();
     }
     update();
@@ -68,10 +68,10 @@ class LoginController extends GetxController {
   void resetPassword() async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text);
-      showSnackbar('Password Reset Email Sent', 'Check your email for instructions',isSuccess: true);
+      CustomSnackbar('Password Reset Email Sent', 'Check your email for instructions',isSuccess: true);
 
     } on FirebaseAuthException catch (e) {
-      showSnackbar('Error Sending Password Reset Email', e.toString());
+      CustomSnackbar('Error Sending Password Reset Email', e.toString());
 
     }
   }

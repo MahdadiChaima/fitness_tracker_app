@@ -15,7 +15,10 @@ class RegisterController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  RxString userId=''.obs;
+  TextEditingController dateBirthController = TextEditingController();
+  TextEditingController yourWeightController = TextEditingController();
+  TextEditingController yourHeightController = TextEditingController();
+  String userId='';
   RxBool isChecked = false.obs;
   var obscureText = true.obs;
 
@@ -23,7 +26,26 @@ class RegisterController extends GetxController {
     obscureText.value = !obscureText.value;
     update();
   }
+  late PageController _pageController;
+  double currentPageValue = 0.0;
+  int? selectedGoalIndex;
 
+  @override
+  void onInit() {
+    super.onInit();
+    _pageController = PageController();
+    _pageController.addListener(() {
+      currentPageValue = _pageController.page!;
+      update();
+    });
+  }
+
+  PageController get pageController => _pageController;
+
+  void setSelectedGoalIndex(int index) {
+    selectedGoalIndex = index;
+    update();
+  }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -44,13 +66,13 @@ class RegisterController extends GetxController {
         password: password,
       );
       print(userCredential);
-      userId=userCredential.user!.uid as RxString;
+      userId=userCredential.user!.uid ;
       // Show success message
-      showSnackbar('Success','Registration successful',isSuccess: true);
+      CustomSnackbar('Success','Registration successful',isSuccess: true);
       Get.to(()=>RegisterScreen2());
       isLoading.value = false;
     } catch (e) {
-      showSnackbar( 'Error',e.toString());
+      CustomSnackbar( 'Error',e.toString());
       isLoading.value = false;
     }
   }
@@ -82,6 +104,13 @@ class RegisterController extends GetxController {
       // Upload image to Firebase Storage
       Reference storageReference = FirebaseStorage.instance.ref().child('images/${DateTime.now().toString()}');
       UploadTask uploadTask = storageReference.putFile(_imageFile!);
+
+      // Log upload progress and status
+      uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+        print('Task state: ${snapshot.state}');
+        print('Progress: ${(snapshot.bytesTransferred / snapshot.totalBytes) * 100} %');
+      });
+
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       _imageUrl = (await storageReference.getDownloadURL()) as RxString?;
 
@@ -89,6 +118,7 @@ class RegisterController extends GetxController {
       String uid = FirebaseAuth.instance.currentUser!.uid;
       FirebaseFirestore.instance.collection('users').doc(uid).update({'image': _imageUrl});
     } catch (e) {
+      CustomSnackbar("error",e.toString());
       print(e.toString());
       // Handle error here
     }

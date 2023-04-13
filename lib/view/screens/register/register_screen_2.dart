@@ -1,4 +1,4 @@
-import 'package:fitness_tracker/presenter/controller/register_page2_controller.dart';
+import 'package:fitness_tracker/presenter/controller/register_controller.dart';
 import 'package:fitness_tracker/view/screens/register/register_screen_3.dart';
 import 'package:fitness_tracker/view/widgets/custom_button.dart';
 import 'package:fitness_tracker/view/widgets/custom_text.dart';
@@ -6,20 +6,17 @@ import 'package:fitness_tracker/view/widgets/custom_text_field.dart';
 import 'package:fitness_tracker/view/widgets/space.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../widgets/colors.dart';
-
 class RegisterScreen2 extends StatelessWidget {
-  final RegisterPage2Controller registerControllerPage2 =
-      Get.put(RegisterPage2Controller());
-
+  final RegisterController registerController =
+      Get.put(RegisterController());
   @override
   Widget build(BuildContext context) {
     String? selectedGender;
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(30.0),
+          padding: EdgeInsets.only(left: 30.0, right: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -54,7 +51,7 @@ class RegisterScreen2 extends StatelessWidget {
               ),
               Space(),
               DefaultTextField(
-                controller: registerControllerPage2.dateBirthController,
+                controller: registerController.dateBirthController,
                 prefixIcon: Icon(Icons.date_range),
                 hintText: 'Date of Birth',
                 onPressed: () {},
@@ -65,7 +62,7 @@ class RegisterScreen2 extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: DefaultTextField(
-                      controller: registerControllerPage2.yourWeightController,
+                      controller: registerController.yourWeightController,
                       prefixIcon: const Icon(Icons.monitor_weight_outlined),
                       hintText: 'Your Weight',
                       onPressed: () {},
@@ -75,24 +72,7 @@ class RegisterScreen2 extends StatelessWidget {
                   const SizedBox(
                     width: 10.0,
                   ),
-                  Container(
-                    height: 48,
-                    width: 48,
-                    child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          elevation: 5,
-                          shadowColor: Colors.deepOrange,
-                          primary: primaryLightColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14.0),
-                          ),
-                        ),
-                        child: Text(
-                          'KG',
-                          style: TextStyle(fontSize: 12),
-                        )),
-                  ),
+                  customButtonWeightHeight('KG'),
                 ],
               ),
               Space(),
@@ -100,7 +80,7 @@ class RegisterScreen2 extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: DefaultTextField(
-                      controller: registerControllerPage2.yourHeightController,
+                      controller: registerController.yourHeightController,
                       prefixIcon: const Icon(Icons.height),
                       hintText: 'Your Height',
                       onPressed: () {},
@@ -110,31 +90,14 @@ class RegisterScreen2 extends StatelessWidget {
                   const SizedBox(
                     width: 10.0,
                   ),
-                  Container(
-                    height: 48,
-                    width: 48,
-                    child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          elevation: 5,
-                          shadowColor: Colors.deepOrange,
-                          primary: primaryLightColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14.0),
-                          ),
-                        ),
-                        child: Text(
-                          'CM',
-                          style: TextStyle(fontSize: 11),
-                        )),
-                  ),
+                  customButtonWeightHeight('CM'),
                 ],
               ),
               Space(),
               CustomButton(
                   text: 'Next >',
                   onPressed: () {
-                    () => Get.to(() => RegisterScreen3());
+                    Get.to(() => RegisterScreen3());
                   })
             ],
           ),
@@ -143,3 +106,21 @@ class RegisterScreen2 extends StatelessWidget {
     );
   }
 }
+customButtonWeightHeight(String text) => Container(
+      height: 48,
+      width: 48,
+      child: ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            elevation: 5,
+            shadowColor: Colors.deepOrange,
+            primary: primaryLightColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14.0),
+            ),
+          ),
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 12),
+          )),
+    );
