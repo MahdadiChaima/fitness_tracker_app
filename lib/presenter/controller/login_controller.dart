@@ -50,9 +50,7 @@ class LoginController extends GetxController {
       Get.to(()=>const WorkoutScreen());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-
         errorMessage = 'No user found for that email.';
-
       } else if (e.code == 'wrong-password') {
         errorMessage = 'Wrong password provided for that user.';
       } else {
@@ -75,7 +73,6 @@ class LoginController extends GetxController {
 
     }
   }
-
   // Logout method
   Future<void> logout() async {
     await _auth.signOut();

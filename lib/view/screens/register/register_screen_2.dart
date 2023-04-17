@@ -7,6 +7,8 @@ import 'package:fitness_tracker/view/widgets/space.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/colors.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 class RegisterScreen2 extends StatelessWidget {
   final RegisterController registerController =
       Get.put(RegisterController());
@@ -43,7 +45,14 @@ class RegisterScreen2 extends StatelessWidget {
                     child: Text('Female'),
                   ),
                 ],
-                onChanged: (value) {},
+                onChanged: (value) {
+                  if(value=='Male'){
+                    registerController.isMale.value=true ;
+                  }
+                  else{
+                    registerController.isMale.value=false ;
+                  }
+                },
                 decoration: const InputDecoration(
                   labelText: 'Gender',
                   border: OutlineInputBorder(),
@@ -54,7 +63,19 @@ class RegisterScreen2 extends StatelessWidget {
                 controller: registerController.dateBirthController,
                 prefixIcon: Icon(Icons.date_range),
                 hintText: 'Date of Birth',
-                onPressed: () {},
+                onPressed: () {
+                  DatePicker.showDatePicker(
+                    context,
+                    showTitleActions: true,
+                    minTime: DateTime(1960),
+                    maxTime: DateTime.now(),
+                    onConfirm: (date) {
+                      registerController.dateBirthController.text = DateFormat('yyyy-MM-dd').format(date);
+                    },
+                    currentTime: DateTime.now(),
+                    locale: LocaleType.en,
+                  );
+                },
                 type: TextInputType.text,
               ),
               Space(),

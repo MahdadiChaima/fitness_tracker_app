@@ -1,4 +1,3 @@
-import 'package:fitness_tracker/view/screens/home_screen.dart';
 import 'package:fitness_tracker/view/screens/login_screen.dart';
 import 'package:fitness_tracker/view/screens/register/register_screen_2.dart';
 import 'package:fitness_tracker/view/screens/register/register_screen_1.dart';
@@ -28,13 +27,15 @@ void main() async {
   } else {
     startWidget = const StartedScreen();
   }
+
+
   runApp( GetMaterialApp(
       title: 'Fitness Tracker',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
       ),
-      home: HomeScreen(),
+      home: startWidget,
     )
   );
 }

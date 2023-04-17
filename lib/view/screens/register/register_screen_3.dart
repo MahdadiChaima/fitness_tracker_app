@@ -79,6 +79,17 @@ class RegisterScreen3 extends StatelessWidget {
                         value: index,
                         groupValue: controller.selectedGoalIndex,
                         onChanged: (value) {
+                         switch(index){
+                           case 1: controller.isImproveShape.value=true;
+                           break;
+                           case 2: controller.isLeanTone.value=true;
+                           break;
+                           case 3: controller.isLoseFat.value=true;
+                           break;
+                           default: controller.isLeanTone.value=true;
+                           break;
+                         }
+
                           controller.setSelectedGoalIndex(value!);
                         },
                       ),

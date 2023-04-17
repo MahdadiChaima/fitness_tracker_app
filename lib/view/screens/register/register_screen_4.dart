@@ -30,7 +30,7 @@ class RegisterScreen4 extends StatelessWidget {
                       radius: 50,
                     ),
                   ElevatedButton(
-                    onPressed: controller.uploadImage,
+                    onPressed: controller.uploadUserData,
                     child: Text('Upload Image'),
                   ),
                   CustomButton(
