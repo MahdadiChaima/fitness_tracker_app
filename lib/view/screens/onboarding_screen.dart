@@ -1,9 +1,12 @@
 import 'package:fitness_tracker/presenter/controller/onboarding_controller.dart';
 import 'package:fitness_tracker/view/screens/register/register_screen_1.dart';
+import 'package:fitness_tracker/view/screens/started_screen.dart';
 import 'package:fitness_tracker/view/widgets/on_boarding_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/view/widgets/colors.dart';
 import 'package:get/get.dart';
+
+import '../../presenter/service/cache_helper.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   final OnBoardingController _controller = Get.put(OnBoardingController());
@@ -35,11 +38,11 @@ class OnBoardingScreen extends StatelessWidget {
               left: 0,
               right: 0,
               child: Obx(
-                () => Row(
+                    () => Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                     _controller.onBoardingItems.length,
-                    (index) => AnimatedContainer(
+                        (index) => AnimatedContainer(
                       duration: Duration(milliseconds: 300),
                       height: 10,
                       width: 10,
@@ -61,18 +64,21 @@ class OnBoardingScreen extends StatelessWidget {
               builder: (controller) {
                 return controller.isLastPage.isTrue
                     ? Positioned(
-                        bottom: 37,
-                        right: 20,
-                        child: IconButton(
-                          onPressed: () => Get.to(()=>RegisterScreen1()),
-                          icon:const Icon(
-                            Icons.navigate_next,
-                            size: 44,
-                            color: primaryColor,
-                          ),
-                        ),
+                  bottom: 37,
+                  right: 20,
+                  child: IconButton(
+                    onPressed: () {
+                      CacheHelper.saveData(
+                          key: 'onBoarding', value: true);
+                      Get.to(()=>RegisterScreen1());},
+                    icon: Icon(
+                      Icons.navigate_next,
+                      size: 44,
+                      color: primaryColor,
+                    ),
+                  ),
 
-                      )
+                )
                     : Container();
               },
             )

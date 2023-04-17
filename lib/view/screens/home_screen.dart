@@ -100,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               CustomTextWidget(index:1 ,text: 'Activity Status',),
-
+Text('hhhhhhhhhhhhhhhhhhhhhh'),
 
 
 

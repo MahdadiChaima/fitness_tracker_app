@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fitness_tracker/view/screens/login_screen.dart';
 import 'package:fitness_tracker/view/screens/register/register_screen_2.dart';
 import 'package:fitness_tracker/view/screens/register/register_screen_1.dart';
@@ -16,7 +17,9 @@ void main() async {
   Widget startWidget=const StartedScreen();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-   token=await CacheHelper.importData(key: 'token');
+  // Initialize Firebase storage
+  await FirebaseStorage.instance;
+  token=await CacheHelper.importData(key: 'token');
   onBoarding =await  CacheHelper.importData(key: 'onBoarding');
   if (onBoarding != null) {
     if (token != null) {
@@ -28,14 +31,13 @@ void main() async {
     startWidget = const StartedScreen();
   }
 
-
   runApp( GetMaterialApp(
-      title: 'Fitness Tracker',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
-      ),
-      home: startWidget,
-    )
+    title: 'Fitness Tracker',
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      primarySwatch: Colors.deepOrange,
+    ),
+    home: startWidget,
+  )
   );
 }
