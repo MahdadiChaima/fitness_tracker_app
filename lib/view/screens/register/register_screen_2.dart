@@ -95,7 +95,7 @@ class RegisterScreen2 extends StatelessWidget {
               ),
               Space(),
               CustomButton(
-                  text: 'Next >',
+                  text: 'Next  >',
                   onPressed: () {
                     Get.to(() => RegisterScreen3());
                   })

@@ -32,7 +32,6 @@ class LoginScreen extends StatelessWidget {
                             SizedBox(
                               height: 50,
                             ),
-
                             DefaultTextField(
                               controller: _loginController.emailController,
                               prefixIcon: Icon(Icons.email),
@@ -41,7 +40,6 @@ class LoginScreen extends StatelessWidget {
                               onPressed: () {},
                               type: TextInputType.emailAddress,
                             ),
-
                             Space(),
                             GetBuilder<LoginController>(init: LoginController(),
                               builder: (controller)=>DefaultTextField(
@@ -71,7 +69,6 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 140,),
-
                             GetBuilder<LoginController>(
                               init: LoginController(),
                               builder:(controller)=> Column(

@@ -75,6 +75,14 @@ class CustomTextWidget extends StatelessWidget {
           decorationThickness: 1.5,
         );
         break;
+      case 9:
+        textStyle = const TextStyle(
+          fontFamily: 'Poppins',
+          fontSize: 14,
+          color: Colors.white
+
+        );
+        break;
       default:
         textStyle =const TextStyle(
           fontFamily: 'Poppins',

@@ -3,10 +3,6 @@ const primaryColor=Color(0xFFFF6243);
 const primaryLightColor=Color(0xFFFA8871);
 const secondColor=Color(0xFF92A3FD);
 const textFieldCBackgroundColor=Color(0xFFF7F8F8);
-
-
-
-
 //Text Color
 const primaryTextColor=Color(0xFF877CC8);
 const titleTextColor=Color(0xFF1D1617);
