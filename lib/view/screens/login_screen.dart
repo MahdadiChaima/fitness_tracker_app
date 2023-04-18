@@ -36,7 +36,7 @@ class LoginScreen extends StatelessWidget {
                               controller: _loginController.emailController,
                               prefixIcon: Icon(Icons.email),
                               hintText: 'Email',
-                              textForEmptyUnValid: "Enter you Email ",
+                              validatorFn: validateEmail,
                               onPressed: () {},
                               type: TextInputType.emailAddress,
                             ),
@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                                 suffix:controller.obscureText.value? Icons.visibility_off_outlined
                                     : Icons.visibility_outlined,
                                 suffixFunction: ()=>controller.toggleObscureText(),
-                              textForEmptyUnValid: "Enter you password ",
+                              validatorFn: validatePassword,
                               onPressed: () {},
                               type: TextInputType.visiblePassword,
                               obscuretext: controller.obscureText.value,

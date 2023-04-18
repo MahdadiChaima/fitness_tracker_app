@@ -84,23 +84,24 @@ class HomeScreen extends StatelessWidget {
                             const SizedBox(width: 110,),
                           ],
                         ),
-                        const Positioned(
-                          right: 0.0,
-                          bottom: 40.0,
+                        const Positioned(top: 10,
+                          right: 40,
                           child: CircularProgressIndicator(
-                            value: 0.3, // the value of the progress indicator (between 0.0 and 1.0)
-                            strokeWidth: 90, // the width of the progress indicator
+                            value: 0.25, // the value of the progress indicator (between 0.0 and 1.0)
+                            strokeWidth: 100, // the width of the progress indicator
                             backgroundColor: Colors.transparent, // the background color of the progress indicator
                             valueColor: AlwaysStoppedAnimation<Color>(primaryColor), // the color of the progress indicator
+
                           ),
                         ),
+
                       ],
                     ),
                   ),
                 ],
               ),
               CustomTextWidget(index:1 ,text: 'Activity Status',),
-Text('hhhhhhhhhhhhhhhhhhhhhh'),
+
 
 
 

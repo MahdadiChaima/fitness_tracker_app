@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fitness_tracker/model/data/user_model.dart';
 import 'package:fitness_tracker/presenter/service/cache_helper.dart';
 import 'package:fitness_tracker/view/screens/register/register_screen_2.dart';
+import 'package:fitness_tracker/view/screens/register/success_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -76,6 +77,8 @@ class RegisterController extends GetxController {
       );
       print(userCredential);
       userId = userCredential.user!.uid;
+      await CacheHelper.saveData(
+          key: 'token', value:userCredential.user!.uid);
       // Show success message
       CustomSnackbar('Success', 'Registration successful', isSuccess: true);
       Get.to(() => RegisterScreen2());
@@ -137,10 +140,32 @@ class RegisterController extends GetxController {
           .doc(userId)
           .set(user.toMap());
       CustomSnackbar("Success", "User data and image have been uploaded successfully",isSuccess:true);
+      Get.to(()=>SuccessRegistration());
     }
     catch(e){
       CustomSnackbar("Error", "An error occurred while uploading user data and image");
       print(e.toString());
     }
   }
+
+  Future<void> getUserData() async {
+    try {
+      isLoading.value = true;
+
+      final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+      await firestore.collection('users').doc(userId).get();
+
+      if (documentSnapshot.exists) {
+        final userData = UserInformation.fromMap(documentSnapshot.data()!);
+        print(userData.username);
+        // do something with userData
+      }
+
+      isLoading.value = false;
+    } catch (e) {
+      CustomSnackbar('Error', e.toString());
+      isLoading.value = false;
+    }
+  }
+
 }

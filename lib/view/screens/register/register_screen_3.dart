@@ -39,10 +39,8 @@ class RegisterScreen3 extends StatelessWidget {
                   text: 'Confirm',
                   onPressed: () {
                     controller.selectedGoalIndex != null
-                        ? print(
-                            "Selected Goal: ${controller.selectedGoalIndex!}")
+                        ?  Get.to(() => const RegisterScreen4())
                         : CustomSnackbar("Error", "Please select your Goal");
-                    Get.to(() => const RegisterScreen4());
                   }),
             ],
           ),
@@ -79,6 +77,9 @@ class RegisterScreen3 extends StatelessWidget {
                         value: index,
                         groupValue: controller.selectedGoalIndex,
                         onChanged: (value) {
+                          controller.isImproveShape.value=false;
+                          controller.isLeanTone.value=false;
+                          controller.isLoseFat.value=false;
                          switch(index){
                            case 1: controller.isImproveShape.value=true;
                            break;

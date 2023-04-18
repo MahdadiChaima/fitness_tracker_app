@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 class RegisterScreen2 extends StatelessWidget {
   final RegisterController registerController =
       Get.put(RegisterController());
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     String? selectedGender;
@@ -19,108 +20,116 @@ class RegisterScreen2 extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(left: 30.0, right: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Image.asset('assets/images/register.png'),
-              CustomTextWidget(
-                index: 1,
-                text: 'Let’s complete your profile',
-              ),
-              Space(),
-              CustomTextWidget(
-                index: 2,
-                text: 'It will help us to know more about you!',
-              ),
-              Space(),
-              DropdownButtonFormField<String>(
-                value: selectedGender,
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Male',
-                    child: Text('Male'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Female',
-                    child: Text('Female'),
-                  ),
-                ],
-                onChanged: (value) {
-                  if(value=='Male'){
-                    registerController.isMale.value=true ;
-                  }
-                  else{
-                    registerController.isMale.value=false ;
-                  }
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Gender',
-                  border: OutlineInputBorder(),
+          child: Form(
+            key:_formKey ,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Image.asset('assets/images/register.png'),
+                CustomTextWidget(
+                  index: 1,
+                  text: 'Let’s complete your profile',
                 ),
-              ),
-              Space(),
-              DefaultTextField(
-                controller: registerController.dateBirthController,
-                prefixIcon: Icon(Icons.date_range),
-                hintText: 'Date of Birth',
-                onPressed: () {
-                  DatePicker.showDatePicker(
-                    context,
-                    showTitleActions: true,
-                    minTime: DateTime(1960),
-                    maxTime: DateTime.now(),
-                    onConfirm: (date) {
-                      registerController.dateBirthController.text = DateFormat('yyyy-MM-dd').format(date);
-                    },
-                    currentTime: DateTime.now(),
-                    locale: LocaleType.en,
-                  );
-                },
-                type: TextInputType.text,
-              ),
-              Space(),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: DefaultTextField(
-                      controller: registerController.yourWeightController,
-                      prefixIcon: const Icon(Icons.monitor_weight_outlined),
-                      hintText: 'Your Weight',
-                      onPressed: () {},
-                      type: TextInputType.text,
+                Space(),
+                CustomTextWidget(
+                  index: 2,
+                  text: 'It will help us to know more about you!',
+                ),
+                Space(),
+                DropdownButtonFormField<String>(
+                  value: selectedGender,
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'Male',
+                      child: Text('Male'),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  customButtonWeightHeight('KG'),
-                ],
-              ),
-              Space(),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: DefaultTextField(
-                      controller: registerController.yourHeightController,
-                      prefixIcon: const Icon(Icons.height),
-                      hintText: 'Your Height',
-                      onPressed: () {},
-                      type: TextInputType.number,
+                    DropdownMenuItem(
+                      value: 'Female',
+                      child: Text('Female'),
                     ),
+                  ],
+                  onChanged: (value) {
+                    if(value=='Male'){
+                      registerController.isMale.value=true ;
+                    }
+                    else{
+                      registerController.isMale.value=false ;
+                    }
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Gender',
+                    border: OutlineInputBorder(),
                   ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  customButtonWeightHeight('CM'),
-                ],
-              ),
-              Space(),
-              CustomButton(
-                  text: 'Next  >',
+                ),
+                Space(),
+                DefaultTextField(
+                  controller: registerController.dateBirthController,
+                  prefixIcon: Icon(Icons.date_range),
+                  hintText: 'Date of Birth',
+                  validatorFn:validateDateOfBirth ,
                   onPressed: () {
-                    Get.to(() => RegisterScreen3());
-                  })
-            ],
+                    DatePicker.showDatePicker(
+                      context,
+                      showTitleActions: true,
+                      minTime: DateTime(1960),
+                      maxTime: DateTime.now(),
+                      onConfirm: (date) {
+                        registerController.dateBirthController.text = DateFormat('yyyy-MM-dd').format(date);
+                      },
+                      currentTime: DateTime.now(),
+                      locale: LocaleType.en,
+                    );
+                  },
+                  type: TextInputType.text,
+                ),
+                Space(),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: DefaultTextField(
+                        controller: registerController.yourWeightController,
+                        prefixIcon: const Icon(Icons.monitor_weight_outlined),
+                        hintText: 'Your Weight',
+                        validatorFn: validateWeight,
+                        onPressed: () {},
+                        type: TextInputType.number,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    customButtonWeightHeight('KG'),
+                  ],
+                ),
+                Space(),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: DefaultTextField(
+                        controller: registerController.yourHeightController,
+                        prefixIcon: const Icon(Icons.height),
+                        hintText: 'Your Height',
+                        validatorFn: validateHeight,
+                        onPressed: () {},
+                        type: TextInputType.number,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    customButtonWeightHeight('CM'),
+                  ],
+                ),
+                Space(),
+                CustomButton(
+                    text: 'Next  >',
+                    onPressed: () {
+                      if(_formKey.currentState!.validate()) {
+                        Get.to(() => RegisterScreen3());
+                      }
+                    })
+              ],
+            ),
           ),
         ),
       ),

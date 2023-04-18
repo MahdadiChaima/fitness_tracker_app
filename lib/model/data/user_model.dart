@@ -43,4 +43,21 @@ class UserInformation {
       'phoneNumber': phoneNumber,
     };
   }
+  factory UserInformation.fromMap(Map<String, dynamic> map) {
+    return UserInformation(
+      username: map['fullName'],
+      email: map['email'],
+      uid: map['uid'],
+      userImage: map['userImage'],
+      dateBirth: DateTime.parse(map['dateOfBirth']),
+      weight: map['weight'],
+      isMale: map['genderMale'],
+      height: map['height'],
+      improveShape: map['improveShape'],
+      leanTone: map['leanTone'],
+      loseFat: map['loseFat'],
+      phoneNumber: map['phoneNumber'],
+    );
+  }
+
 }

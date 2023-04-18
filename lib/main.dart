@@ -1,4 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fitness_tracker/presenter/controller/register_controller.dart';
+import 'package:fitness_tracker/view/screens/home_screen.dart';
 import 'package:fitness_tracker/view/screens/login_screen.dart';
 import 'package:fitness_tracker/view/screens/register/register_screen_2.dart';
 import 'package:fitness_tracker/view/screens/register/register_screen_1.dart';
@@ -17,6 +19,8 @@ void main() async {
   Widget startWidget=const StartedScreen();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  RegisterController controller=RegisterController();
+  controller.getUserData();
   // Initialize Firebase storage
   await FirebaseStorage.instance;
   token=await CacheHelper.importData(key: 'token');
